@@ -1,0 +1,12 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace Gist2.Extensions.VectorExt {
+
+    public static class VectorExtension {
+
+        public static Vector2 Div(this float a, Vector2 b) => new Vector2(a / b.x, a / b.y);
+        public static Vector2 Div(this float a, Vector2Int b) => new Vector2(a / b.x, a / b.y);
+    }
+}
