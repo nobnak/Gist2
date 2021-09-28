@@ -7,12 +7,12 @@ namespace Gist2.Extensions.ScreenExt {
 
 	public static class ScreenExtension {
 
-        public static Vector2 UV(this Vector3 mousePosition) {
-            var uv = new Vector2(
-                (float)mousePosition.x / Screen.width, 
-                (float)mousePosition.y / Screen.height);
-            return uv;
-        }
+		public static Vector2 UV(this Vector2Int screen, Vector2 pixelPos)
+			=> new Vector2((float)pixelPos.x / screen.x, (float)pixelPos.y / screen.y);
+		public static Vector2 UV(this Camera cam, Vector2 pixelPos) => cam.Size().UV(pixelPos);
+		public static Vector2 UV(this Vector2 mousePosition) => Size().UV(mousePosition);
+		public static Vector2 UV(this Vector3 mousePosition) => ((Vector2)mousePosition).UV();
+
 		public static int LOD(this int size, int lod) {
 			if (lod > 0) {
 				size >>= lod;
@@ -24,6 +24,7 @@ namespace Gist2.Extensions.ScreenExt {
 		public static Vector2Int LOD(int width, int height, int lod) => new Vector2Int(width.LOD(lod), height.LOD(lod));
 		public static Vector2Int LOD(this Vector2Int size, int lod)	=> LOD(size.x, size.y, lod);
 
+		public static Vector2Int Size() => new Vector2Int(Screen.width, Screen.height);
 		public static Vector2Int Size(this Texture tex) => new Vector2Int(tex.width, tex.height);
 		public static Vector2Int Size(this Camera c) => new Vector2Int(c.pixelWidth, c.pixelHeight);
 		public static Vector2Int Size(this Resolution r) => new Vector2Int(r.width, r.height);
