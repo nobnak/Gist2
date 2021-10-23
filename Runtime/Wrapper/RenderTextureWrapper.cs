@@ -6,7 +6,7 @@ using UnityEngine.Experimental.Rendering;
 
 namespace Gist2.Wrapper {
 
-    public class RenderTextureWrapper : IWrapper<RenderTexture>, IInitializable, System.IDisposable {
+    public class RenderTextureWrapper : IValue<RenderTexture>, IInitializable, System.IDisposable {
 
         protected Tuner tuner = new Tuner();
 

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Gist2.Wrapper {
 
-    public interface IWrapper<T> {
+    public interface IValue<out T> {
 
         T Value { get; }
     }
