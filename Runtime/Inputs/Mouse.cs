@@ -19,6 +19,12 @@ namespace Gist2.Inputs {
         }
 
         #region interface
+
+        #region object
+        public override string ToString()
+            => $"<{GetType().Name} : pos={currPos}, delta={currPosDelta} at {currFrame}>";
+        #endregion
+
         public Vector2 Delta {
             get {
                 Validate();
@@ -50,6 +56,7 @@ namespace Gist2.Inputs {
                 currPosDelta = currPos - prevPos;
             }
         }
+        public void Update() => Validate();
         #endregion
 
         #region static
