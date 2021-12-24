@@ -1,10 +1,11 @@
+using Gist2.Extensions.InputExt;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Gist2.Inputs {
 
-    public class Mouse {
+    public class MouseCursorMonitor {
         public const int DEFAULT_FRAME = -1;
 
         protected int currFrame = DEFAULT_FRAME;
@@ -14,7 +15,7 @@ namespace Gist2.Inputs {
         protected int prevFrame;
         protected Vector2 prevPos;
 
-        public Mouse() {
+        public MouseCursorMonitor() {
             Validate();
         }
 
@@ -51,7 +52,7 @@ namespace Gist2.Inputs {
                 currFrame = nextFrame;
 
                 prevPos = currPos;
-                currPos = GetCurrentPosition();
+                currPos = InputExtension.GetMousePosition();
                 if (prevFrame == DEFAULT_FRAME) prevPos = currPos;
                 currPosDelta = currPos - prevPos;
             }
@@ -59,9 +60,6 @@ namespace Gist2.Inputs {
         public void Update() => Validate();
         #endregion
 
-        #region static
-        public static Vector2 GetCurrentPosition() => (Vector2)Input.mousePosition;
-        #endregion
     }
 
 }
