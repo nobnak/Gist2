@@ -16,5 +16,13 @@ namespace Gist2.Extensions.ComponentExt {
             return v;
         }
         public static T DeepCopy<T>(this T v) => JsonUtility.FromJson<T>(JsonUtility.ToJson(v));
+
+        public static T Clone<T>(this T original) {
+            T newObject = (T)System.Activator.CreateInstance(original.GetType());
+            foreach (var originalProp in original.GetType().GetProperties()) {
+                originalProp.SetValue(newObject, originalProp.GetValue(original));
+            }
+            return newObject;
+        }
     }
 }
