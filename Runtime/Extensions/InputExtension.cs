@@ -8,11 +8,13 @@ namespace Gist2.Extensions.InputExt {
     public static class InputExtension {
 
         public static Vector2 GetMousePosition() {
-            return UnityEngine.InputSystem.Mouse.current.position.ReadValue();
+            var currMouse = UnityEngine.InputSystem.Mouse.current;
+            return (currMouse == null) ? default : currMouse.position.ReadValue();
         }
 
         public static bool GetKeyDown(this Key k) {
-            return Keyboard.current[k].wasPressedThisFrame;
+            var currKeyboard = Keyboard.current;
+            return (currKeyboard == null) ? default : Keyboard.current[k].wasPressedThisFrame;
         }
     }
 
