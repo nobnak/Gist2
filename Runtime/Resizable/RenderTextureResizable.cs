@@ -16,10 +16,14 @@ namespace Gist2.Resizable {
             this.creator = creator;
         }
 
-        #region interface
+		#region static
+		public static implicit operator RenderTexture(RenderTextureResizable rtr) => rtr.Value;
+		#endregion
 
-        #region IDisposable
-        public void Dispose() {
+		#region interface
+
+		#region IDisposable
+		public void Dispose() {
             Invalidate();
         }
         #endregion
