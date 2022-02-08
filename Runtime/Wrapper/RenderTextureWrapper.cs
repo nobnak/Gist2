@@ -6,18 +6,18 @@ using UnityEngine.Experimental.Rendering;
 
 namespace Gist2.Wrapper {
 
-    public class RenderTextureWrapper : IValue<RenderTexture>, IInitializable, System.IDisposable {
+    public class RenderTextureWrapper : IValue<RenderTexture>, IAssurance, System.IDisposable {
 
         protected Tuner tuner = new Tuner();
 
         protected Vector2Int size;
         protected RenderTexture tex;
 
-        protected Init init;
+        protected Assurance init;
 
         public RenderTextureWrapper() {
-            init = new Init();
-            init.Initialization += () => {
+            init = new Assurance();
+            init.Renew += () => {
                 RenderTexture v = null;
                 if (size.x >= 4 && size.y >= 4)
                     v = new RenderTexture(size.x, size.y, tuner.depth, tuner.gf);
@@ -28,8 +28,9 @@ namespace Gist2.Wrapper {
         #region interafce
         public event Action Changed;
 
-        #region IInitializable
-        public void Initialize() => init.Initialize();
+		#region IAssurance
+		public void Assure() => init.Assure();
+		public void Expire() => init.Expire();
         #endregion
 
         #region IDisposable
@@ -45,7 +46,7 @@ namespace Gist2.Wrapper {
             get => tuner.DeepCopy();
             set {
                 tuner = value.DeepCopy();
-                init.Reset();
+                init.Expire();
             }
         }
         public Vector2Int Size {
@@ -53,13 +54,13 @@ namespace Gist2.Wrapper {
             set {
                 if (size != value) {
                     size = value;
-                    init.Reset();
+                    init.Expire();
                 }
             }
         }
         public RenderTexture Value { 
             get {
-                init.Initialize();
+                init.Assure();
                 return tex;
             }
             protected set {
