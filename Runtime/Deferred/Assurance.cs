@@ -28,24 +28,24 @@ namespace Gist2.Deferred {
 
 		#region IAssurance
 		public void Assure() {
-			if (underEvaluation)
-				throw new System.InvalidOperationException("Recursive Assure calls");
-			if (lastValidationTime == Time.frameCount) return;
-			if (validity && (Examine == null || Examine())) return;
-
+			if (underEvaluation) throw new System.InvalidOperationException("Recursive Assure calls");
 			try {
 				underEvaluation = true;
-				Renew?.Invoke();
+
+				if (lastValidationTime == Time.frameCount) return;
+				if (validity && (Examine == null || Examine())) return;
+
+				try {
+					Renew?.Invoke();
+				} finally {
+					validity = true;
+					lastValidationTime = Time.frameCount;
+				}
 			} finally {
 				underEvaluation = false;
-				validity = true;
-				lastValidationTime = Time.frameCount;
 			}
         }
-        public void Expire() {
-            if (!validity) return;
-            validity = false;
-        }
+        public void Expire() => validity = false;
 		#endregion
 
 		public void Reset() {
