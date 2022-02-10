@@ -1,12 +1,12 @@
 using Gist2.Deferred;
 using Gist2.Extensions.ComponentExt;
+using Gist2.Interfaces;
 using System;
 using UnityEngine;
-using UnityEngine.Experimental.Rendering;
 
 namespace Gist2.Wrapper {
 
-    public class RenderTextureWrapper : IValue<RenderTexture>, IAssurance, System.IDisposable {
+	public class RenderTextureWrapper : IValue<RenderTexture>, IAssurance, System.IDisposable {
 
         protected Tuner tuner = new Tuner();
 
