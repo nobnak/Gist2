@@ -12,7 +12,8 @@ namespace Gist2.Deferred {
     public class Assurance : IAssurance {
 
 		public event System.Func<bool> Examine;
-		public event System.Action Renew;
+		public event System.Action OnRenew;
+        public event System.Action AfterRenew;
 
 		protected bool initialValidity;
 		protected bool validity;
@@ -28,33 +29,37 @@ namespace Gist2.Deferred {
 
 		#region IAssurance
 		public void Assure() {
-			if (underEvaluation) throw new System.InvalidOperationException("Recursive Assure calls");
-			try {
-				underEvaluation = true;
+            if (underEvaluation) throw new System.InvalidOperationException("Recursive Assure calls");
+            if (lastValidationTime == Time.frameCount) return;
+            if (validity && (Examine == null || Examine())) return;
 
-				if (lastValidationTime == Time.frameCount) return;
-				if (validity && (Examine == null || Examine())) return;
-
-				try {
-					Renew?.Invoke();
-				} finally {
-					validity = true;
-					lastValidationTime = Time.frameCount;
-				}
-			} finally {
-				underEvaluation = false;
-			}
+            Renew();
+            AfterRenew?.Invoke();
         }
+
         public void Expire() => validity = false;
 		#endregion
 
 		public void Reset() {
 			validity = initialValidity;
 			Examine = null;
-			Renew = null;
+			OnRenew = null;
 			lastValidationTime = -1;
 			underEvaluation = false;
 		}
-		#endregion
-	}
+        #endregion
+
+        #region member
+        protected void Renew() {
+            try {
+                underEvaluation = true;
+                OnRenew?.Invoke();
+            } finally {
+                underEvaluation = false;
+                validity = true;
+                lastValidationTime = Time.frameCount;
+            }
+        }
+        #endregion
+    }
 }

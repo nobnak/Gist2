@@ -12,16 +12,21 @@ namespace Gist2.Wrapper {
 
         protected Vector2Int size;
         protected RenderTexture tex;
+        protected RenderTexture prevTex;
 
         protected Assurance init;
 
         public RenderTextureWrapper() {
             init = new Assurance();
-            init.Renew += () => {
+            init.OnRenew += () => {
                 RenderTexture v = null;
                 if (size.x >= 4 && size.y >= 4)
                     v = new RenderTexture(size.x, size.y, tuner.depth, tuner.gf);
-                Value = v;
+               SetTexture(v);
+            };
+            init.AfterRenew += () => {
+                Changed?.Invoke();
+                ReleasePrevious();
             };
         }
 
@@ -35,10 +40,8 @@ namespace Gist2.Wrapper {
 
         #region IDisposable
         public void Dispose() {
-           if (tex != null) {
-                tex.Destroy();
-                tex = null;
-            }
+            ReleasePrevious();
+            ReleaseCurrent();
         }
         #endregion
 
@@ -63,15 +66,22 @@ namespace Gist2.Wrapper {
                 init.Assure();
                 return tex;
             }
-            protected set {
-                var prev = tex;
-                try {
-                    tex = value;
-                    Changed?.Invoke();
-                } finally {
-                    prev.Destroy();
-                }
-            }
+        }
+        #endregion
+
+        #region member
+        protected void SetTexture(RenderTexture next) {
+            ReleasePrevious();
+            prevTex = tex;
+            tex = next;
+        }
+        protected void ReleasePrevious() {
+            prevTex.Destroy();
+            prevTex = null;
+        }
+        protected void ReleaseCurrent() {
+            tex.Destroy();
+            tex = null;
         }
         #endregion
 
