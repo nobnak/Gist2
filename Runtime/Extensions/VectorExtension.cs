@@ -12,5 +12,7 @@ namespace Gist2.Extensions.VectorExt {
         public static float Cross(this Vector2 a, Vector2 b) {
             return a.x * b.y - a.y * b.x;
         }
+
+		public static int Area(this Vector2Int v) => v.x * v.y;
     }
 }

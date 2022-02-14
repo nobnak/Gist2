@@ -7,6 +7,8 @@ namespace Gist2.Resizable {
 
     public class RenderTextureResizable : System.IDisposable {
 
+		public event System.Action<RenderTextureResizable> OnSizeChanged;
+
         protected Vector2Int size = new Vector2Int(4, 4);
 
         protected RenderTexture tex;
@@ -34,7 +36,9 @@ namespace Gist2.Resizable {
                 if (size != value) {
                     size = value;
                     Invalidate();
-                }
+					OnSizeChanged?.Invoke(this);
+
+				}
             }
         }
         public RenderTexture Value {
