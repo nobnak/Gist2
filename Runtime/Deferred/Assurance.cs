@@ -5,14 +5,14 @@ using UnityEngine;
 namespace Gist2.Deferred {
 
     public interface IAssurance {
-        void Assure();
+        void Assure(bool force = false);
 		void Expire();
     }
 
     public class Assurance : IAssurance {
 
 		public event System.Func<bool> Examine;
-		public event System.Action OnRenew;
+		public event System.Action Renew;
         public event System.Action AfterRenew;
 
 		protected bool initialValidity;
@@ -28,12 +28,13 @@ namespace Gist2.Deferred {
 		#region interface
 
 		#region IAssurance
-		public void Assure() {
+		public void Assure(bool force = false) {
+            if (force) Expire();
             if (underEvaluation) throw new System.InvalidOperationException("Recursive Assure calls");
             if (lastValidationTime == Time.frameCount) return;
             if (validity && (Examine == null || Examine())) return;
 
-            Renew();
+            TransactOfRenew();
             AfterRenew?.Invoke();
         }
 
@@ -43,17 +44,17 @@ namespace Gist2.Deferred {
 		public void Reset() {
 			validity = initialValidity;
 			Examine = null;
-			OnRenew = null;
+			Renew = null;
 			lastValidationTime = -1;
 			underEvaluation = false;
 		}
         #endregion
 
         #region member
-        protected void Renew() {
+        protected void TransactOfRenew() {
             try {
                 underEvaluation = true;
-                OnRenew?.Invoke();
+                Renew?.Invoke();
             } finally {
                 underEvaluation = false;
                 validity = true;

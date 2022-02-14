@@ -4,7 +4,7 @@ using Gist2.Interfaces;
 using System;
 using UnityEngine;
 
-namespace Gist2.Wrapper {
+namespace Gist2.Adapter {
 
 	public class RenderTextureWrapper : IValue<RenderTexture>, IAssurance, System.IDisposable {
 
@@ -18,7 +18,7 @@ namespace Gist2.Wrapper {
 
         public RenderTextureWrapper() {
             init = new Assurance();
-            init.OnRenew += () => {
+            init.Renew += () => {
                 RenderTexture v = null;
                 if (size.x >= 4 && size.y >= 4)
                     v = new RenderTexture(size.x, size.y, tuner.depth, tuner.gf);
@@ -34,7 +34,7 @@ namespace Gist2.Wrapper {
         public event Action Changed;
 
 		#region IAssurance
-		public void Assure() => init.Assure();
+		public void Assure(bool force = false) => init.Assure(force);
 		public void Expire() => init.Expire();
         #endregion
 
