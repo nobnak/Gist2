@@ -13,5 +13,6 @@ namespace Gist2.Extensions.SizeExt {
 
 		public static float Aspect(this Vector2Int v) => v.x / (float)v.y;
 
+		public static Vector2Int ScreenWindow() => new Vector2Int(Screen.width, Screen.height);
 	}
 }
