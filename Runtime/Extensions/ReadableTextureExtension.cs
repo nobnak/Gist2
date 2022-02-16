@@ -17,7 +17,7 @@ namespace Gist2.Extensions.ReadableTextureExt {
 			return tex[x, y];
 		}
 
-		public static Vector4 Bilinear(this IReadableTexture<Vector4> tex, Vector2 uv) {
+		public static T Bilinear<T>(this IReadableTexture<T> tex, Vector2 uv) where T : struct {
 			var x = tex.Width * uv.x;
 			var y = tex.Height * uv.y;
 
@@ -34,8 +34,24 @@ namespace Gist2.Extensions.ReadableTextureExt {
 			var vlt = tex[xl, yt];
 			var vrt = tex[xr, yt];
 
-			var v = Vector4.Lerp(Vector4.Lerp(vlb, vrb, s), Vector4.Lerp(vlt, vrt, s), t);
+			var v = t.Lerp(s.Lerp(vlb, vrb), s.Lerp(vlt, vrt));
 			return v;
+		}
+
+		public static T Lerp<T>(this float t, T start, T end) {
+			if (start is Vector4)
+				return (T)(object)Vector4.Lerp((Vector4)(object)start, (Vector4)(object)end, t);
+
+			if (start is Color32)
+				return (T)(object)Color32.Lerp((Color32)(object)start, (Color32)(object)end, t);
+
+			if (start is Color)
+				return (T)(object)Color.Lerp((Color)(object)start, (Color)(object)end, t);
+
+			if (start is float)
+				return (T)(object)Mathf.Lerp((float)(object)start, (float)(object)end, t);
+
+			throw new System.NotSupportedException($"Type not supported : {typeof(T).Name}");
 		}
 	}
 }
