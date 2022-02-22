@@ -53,5 +53,9 @@ namespace Gist2.Extensions.ReadableTextureExt {
 
 			throw new System.NotSupportedException($"Type not supported : {typeof(T).Name}");
 		}
+
+		public static Vector2Int Size<T>(this IReadableTexture<T> tex) where T : struct {
+			return new Vector2Int(tex.Width, tex.Height);
+		}
 	}
 }
