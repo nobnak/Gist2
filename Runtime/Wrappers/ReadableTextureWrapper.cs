@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Gist2.Adapter {
+namespace Gist2.Wrappers {
 
 	public class ReadableTextureWrapper<T> : IReadableTexture<T> where T : struct {
 
