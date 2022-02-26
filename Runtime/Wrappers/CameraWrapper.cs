@@ -10,7 +10,6 @@ namespace Gist2.Wrappers {
 
         #region initializer
         public System.Func<Camera, Camera> Updator;
-        public event System.Action<CameraWrapper> Changed = null;
         #endregion
 
         protected Camera cam;
