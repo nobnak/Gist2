@@ -34,8 +34,11 @@ namespace Gist2.Deferred {
             if (lastValidationTime == Time.frameCount) return;
             if (validity && (Examine == null || Examine())) return;
 
-            TransactOfRenew();
-            AfterRenew?.Invoke();
+            try {
+                TransactOfRenew();
+            } finally {
+                AfterRenew?.Invoke();
+            }
         }
 
         public void Expire() => validity = false;

@@ -27,6 +27,7 @@ namespace Gist2.Wrappers {
             };
             defferedTexGen.AfterRenew += () => {
                 Notify();
+                prev.Destroy();
             };
         }
         public RenderTextureWrapper() : this(null) { }
@@ -42,6 +43,7 @@ namespace Gist2.Wrappers {
         public void Dispose() {
             SetTexture(null);
             Notify();
+            prev.Destroy();
         }
         #endregion
 
@@ -64,14 +66,10 @@ namespace Gist2.Wrappers {
 
         #region member
         protected void SetTexture(RenderTexture next) {
-            prev.Destroy();
             prev = tex;
             tex = next;
         }
-        protected void Notify() {
-            Changed?.Invoke(this);
-            prev.Destroy();
-        }
+        protected void Notify() => Changed?.Invoke(this);
         #endregion
 
         #region static
