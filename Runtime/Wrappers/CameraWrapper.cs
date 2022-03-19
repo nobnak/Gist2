@@ -23,7 +23,7 @@ namespace Gist2.Wrappers {
 
         #region IDisposable
         public void Dispose() {
-            cam.gameObject.Destroy();
+            cam?.gameObject.Destroy();
         }
         #endregion
 
