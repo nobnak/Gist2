@@ -59,7 +59,7 @@ namespace Gist2.Wrappers {
         public RenderTexture Value { 
             get {
                 defferedTexGen.Assure();
-                return tex;
+				return tex;
             }
         }
         #endregion
