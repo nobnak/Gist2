@@ -1,5 +1,9 @@
 {
-	"name": "com.nobnak.Gist2",
+	"name": "com.nobnak.gist2",
 	"displayName": "Gist2",
-	"version": "1.0.0"
+	"version": "1.0.0",
+
+	"dependencies": {
+		"com.unity.mathematics": "1.2.6"
+	}
 }
