@@ -2,7 +2,8 @@
     "name": "Gist2",
     "rootNamespace": "",
     "references": [
-        "Unity.Mathematics"
+        "Unity.Mathematics",
+        "Unity.Burst"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
