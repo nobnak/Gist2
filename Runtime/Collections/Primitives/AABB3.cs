@@ -18,6 +18,11 @@ namespace Gist2.Collections.Primitives {
             this.Max = max;
         }
 
+        #region object
+        public override string ToString()
+            => $"{GetType().Name}: [{Min}, {Max}]";
+        #endregion
+
         public readonly float3 Center {
             get { 
                 this.Center(out var center); 
