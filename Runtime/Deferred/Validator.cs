@@ -4,24 +4,24 @@ using UnityEngine;
 
 namespace Gist2.Deferred {
 
-    public interface IAssurance {
-        void Assure(bool force = false);
-		void Expire();
+    public interface IValidator {
+        void Validate(bool force = false);
+		void Invalidate();
     }
 
-    public class Assurance : IAssurance {
+    public class Validator : IValidator {
 
-		public event System.Func<bool> Examine;
-		public event System.Action Renew;
-        public event System.Action AfterRenew;
-		public event System.Action Expiration;
+		public event System.Func<bool> CheckValidity;
+		public event System.Action OnValidate;
+        public event System.Action AfterValidate;
+		public event System.Action OnInvalidate;
 
 		protected bool initialValidity;
 		protected bool validity;
 		protected bool underEvaluation;
 		protected int lastValidationTime = -1;
 
-        public Assurance(bool validity = false) {
+        public Validator(bool validity = false) {
 			this.initialValidity = validity;
 			Reset();
 		}
@@ -29,31 +29,31 @@ namespace Gist2.Deferred {
 		#region interface
 
 		#region IAssurance
-		public void Assure(bool force = false) {
-            if (force) Expire();
+		public void Validate(bool force = false) {
+            if (force) Invalidate();
             if (underEvaluation) throw new System.InvalidOperationException("Recursive Assure calls");
             if (validity 
-				&& ((lastValidationTime == Time.frameCount) || (Examine == null || Examine()))) 
+				&& ((lastValidationTime == Time.frameCount) || (CheckValidity == null || CheckValidity()))) 
 				return;
 
             try {
                 TransactOfRenew();
             } finally {
-                AfterRenew?.Invoke();
+                AfterValidate?.Invoke();
             }
         }
 
-		public void Expire() {
+		public void Invalidate() {
 			validity = false;
-			Expiration?.Invoke();
+			OnInvalidate?.Invoke();
 		}
 		#endregion
 
 		public void Reset() {
 			validity = initialValidity;
-			Expiration = null;
-			Examine = null;
-			Renew = null;
+			OnInvalidate = null;
+			CheckValidity = null;
+			OnValidate = null;
 			lastValidationTime = -1;
 			underEvaluation = false;
 		}
@@ -63,7 +63,7 @@ namespace Gist2.Deferred {
         protected void TransactOfRenew() {
             try {
                 underEvaluation = true;
-                Renew?.Invoke();
+                OnValidate?.Invoke();
             } finally {
                 underEvaluation = false;
                 validity = true;

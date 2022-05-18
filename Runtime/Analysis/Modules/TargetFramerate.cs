@@ -7,27 +7,27 @@ namespace Gist2.Analysis.Modules {
 
     public class TargetFramerate : IUpdate {
         Tuner tuner = new Tuner();
-        Assurance assurance = new Assurance();
+        Validator assurance = new Validator();
 
         public TargetFramerate() {
             assurance.Reset();
-            assurance.Renew += () => {
+            assurance.OnValidate += () => {
                 Application.targetFrameRate = (tuner.framerate >= 0) ? tuner.framerate : -1;
                 QualitySettings.vSyncCount = Mathf.Clamp(tuner.vSyncCount, 0, 4);
             };
 
-            assurance.Assure();
+            assurance.Validate();
         }
 
         public Tuner CurrTuner {
             get => tuner;
             set {
                 tuner = value;
-                assurance.Expire();
+                assurance.Invalidate();
             }
         }
         public void Update() {
-            assurance.Assure();
+            assurance.Validate();
         }
 
         [System.Serializable]

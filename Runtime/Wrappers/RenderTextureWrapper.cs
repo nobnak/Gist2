@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Gist2.Wrappers {
 
-	public class RenderTextureWrapper : IValue<RenderTexture>, IAssurance, System.IDisposable {
+	public class RenderTextureWrapper : IValue<RenderTexture>, IValidator, System.IDisposable {
 
         #region intializer
         public System.Func<Vector2Int, RenderTexture> Generator { get; set; }
@@ -16,16 +16,16 @@ namespace Gist2.Wrappers {
         protected Vector2Int size;
         protected RenderTexture tex, prev;
 
-        protected Assurance defferedTexGen;
+        protected Validator defferedTexGen;
 
         public RenderTextureWrapper(System.Func<Vector2Int, RenderTexture> generator) {
             this.Generator = generator;
 
-            defferedTexGen = new Assurance();
-            defferedTexGen.Renew += () => {
+            defferedTexGen = new Validator();
+            defferedTexGen.OnValidate += () => {
                 SetTexture(Generator(size));
             };
-            defferedTexGen.AfterRenew += () => {
+            defferedTexGen.AfterValidate += () => {
                 Notify();
                 prev.Destroy();
             };
@@ -35,8 +35,8 @@ namespace Gist2.Wrappers {
         #region interafce
 
 		#region IAssurance
-		public void Assure(bool force = false) => defferedTexGen.Assure(force);
-		public void Expire() => defferedTexGen.Expire();
+		public void Validate(bool force = false) => defferedTexGen.Validate(force);
+		public void Invalidate() => defferedTexGen.Invalidate();
         #endregion
 
         #region IDisposable
@@ -52,13 +52,13 @@ namespace Gist2.Wrappers {
             set {
                 if (size != value) {
                     size = value;
-                    defferedTexGen.Expire();
+                    defferedTexGen.Invalidate();
                 }
             }
         }
         public RenderTexture Value { 
             get {
-                defferedTexGen.Assure();
+                defferedTexGen.Validate();
 				return tex;
             }
         }

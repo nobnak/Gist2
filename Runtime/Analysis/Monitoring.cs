@@ -11,7 +11,7 @@ namespace Gist2.Analysis {
 
         public Tuner tuner = new Tuner();
 
-        Assurance assurance = new Assurance();
+        Validator assurance = new Validator();
         TargetFramerate targetFramerate;
         AutoHideCursor autoHide;
         FramerateCounter framerate;
@@ -23,19 +23,19 @@ namespace Gist2.Analysis {
             framerate = new FramerateCounter();
 
             assurance.Reset();
-            assurance.Renew += () => {
+            assurance.OnValidate += () => {
                 targetFramerate.CurrTuner = tuner.targetFramerate;
                 autoHide.CurrTuner = tuner.autoHide;
                 framerate.CurrTuner = tuner.framerate;
             };
 
-            assurance.Assure();
+            assurance.Validate();
         }
         private void OnValidate() {
-            assurance.Expire();
+            assurance.Invalidate();
         }
         private void Update() {
-            assurance.Assure();
+            assurance.Validate();
             targetFramerate.Update();
             autoHide.Update();
             framerate.Update();

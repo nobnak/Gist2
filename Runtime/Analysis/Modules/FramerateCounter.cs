@@ -8,26 +8,26 @@ namespace Gist2.Analysis.Modules {
     public class FramerateCounter : IUpdate {
 
         Tuner tuner = new Tuner();
-        Assurance assurance;
+        Validator assurance;
         float lastTime;
         int lastFrameCount;
         float currFramerate;
 
         public FramerateCounter() {
-            assurance = new Assurance();
-            assurance.Renew += () => {
+            assurance = new Validator();
+            assurance.OnValidate += () => {
                 currFramerate = 0f;
                 lastTime = Time.time;
                 lastFrameCount = Time.frameCount;
             };
-            assurance.Assure();
+            assurance.Validate();
         }
 
         public void Update() {
             var t = Time.time;
             var c = Time.frameCount;
 
-            assurance.Assure();
+            assurance.Validate();
 
             var dt = t - lastTime;
             var df = c - lastFrameCount;
@@ -43,7 +43,7 @@ namespace Gist2.Analysis.Modules {
             get => tuner;
             set {
                 tuner = value;
-                assurance.Expire();
+                assurance.Invalidate();
             }
         }
         public float CurrFramerate { get => currFramerate; }

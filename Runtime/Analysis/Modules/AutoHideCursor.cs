@@ -11,14 +11,14 @@ namespace Gist2.Analysis.Modules {
         Tuner tuner = new Tuner();
         MouseCursorMonitor cursor;
 
-        Assurance assurance = new Assurance();
+        Validator assurance = new Validator();
         float lastTime;
         Vector2 lastPos;
 
         public AutoHideCursor() {
             cursor = new MouseCursorMonitor();
 
-            assurance.Renew += () => {
+            assurance.OnValidate += () => {
                 cursor.Update();
                 lastTime = Time.time;
                 lastPos = cursor.CurrPos;
@@ -29,14 +29,14 @@ namespace Gist2.Analysis.Modules {
             get => tuner;
             set {
                 tuner = value;
-                assurance.Expire();
+                assurance.Invalidate();
             }
         }
 
         public void Update() {
             var t = Time.realtimeSinceStartup;
 
-            assurance.Assure();
+            assurance.Validate();
             cursor.Update();
 
             if ((cursor.CurrPos - lastPos).sqrMagnitude > tuner.threshold * tuner.threshold) {

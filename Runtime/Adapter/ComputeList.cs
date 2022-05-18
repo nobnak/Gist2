@@ -9,14 +9,14 @@ namespace Gist2.Adapter {
 
     public class ComputeList<T> : System.IDisposable, IList<T> where T : struct {
 
-        protected Assurance assure = new Assurance();
+        protected Validator assure = new Validator();
         protected List<T> list;
         protected ComputeBuffer buf;
 
         public ComputeList(List<T> src) {
             this.list = src;
 
-            assure.Renew += () => {
+            assure.OnValidate += () => {
                 if (buf != null && buf.count != list.Count) ReleaseBuffer();
                 if (buf == null && list.Count > 0) buf = new ComputeBuffer(list.Count, Marshal.SizeOf<T>());
                 buf?.SetData(list);
@@ -33,12 +33,12 @@ namespace Gist2.Adapter {
         #endregion
 
         #region IList
-        public T this[int index] { get => list[index]; set { assure.Expire(); list[index] = value; } }
-        public void Add(T item) { assure.Expire(); list.Add(item); }
-        public void Clear() { assure.Expire(); list.Clear(); }
-        public void Insert(int index, T item) { assure.Expire(); list.Insert(index, item); }
-        public bool Remove(T item) { assure.Expire(); return list.Remove(item); }
-        public void RemoveAt(int index) { assure.Expire(); list.RemoveAt(index); }
+        public T this[int index] { get => list[index]; set { assure.Invalidate(); list[index] = value; } }
+        public void Add(T item) { assure.Invalidate(); list.Add(item); }
+        public void Clear() { assure.Invalidate(); list.Clear(); }
+        public void Insert(int index, T item) { assure.Invalidate(); list.Insert(index, item); }
+        public bool Remove(T item) { assure.Invalidate(); return list.Remove(item); }
+        public void RemoveAt(int index) { assure.Invalidate(); list.RemoveAt(index); }
 
         public int Count => list.Count;
         public bool IsReadOnly => false;
@@ -53,7 +53,7 @@ namespace Gist2.Adapter {
 
         #region static
         public static implicit operator ComputeBuffer (ComputeList<T> list) {
-            list.assure.Assure();
+            list.assure.Validate();
             return list.buf;
         }
         #endregion
