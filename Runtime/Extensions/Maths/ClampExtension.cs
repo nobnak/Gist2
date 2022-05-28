@@ -17,5 +17,8 @@ namespace Gist2.Extensions.Maths {
         public static void Clamp01(this ref float3 v) => v = math.clamp(v, 0f, 1f);
         [BurstCompile]
         public static void Clamp01(this ref float4 v) => v = math.clamp(v, 0f, 1f);
-    }
+
+		[BurstCompile]
+		public static float Clamp(this float v, float min, float max) => math.clamp(v, min, max);
+	}
 }
