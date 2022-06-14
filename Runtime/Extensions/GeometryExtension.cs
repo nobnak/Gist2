@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace Gist2.Extensions.GeometryExt {
@@ -37,6 +38,29 @@ namespace Gist2.Extensions.GeometryExt {
 			}
 
 			return res;
+		}
+
+		public static bool PointInPolygon(this IEnumerable<float2> boundary, float2 p) {
+			var iter = boundary.GetEnumerator();
+
+			if (!iter.MoveNext()) return false;
+			var v0 = iter.Current;
+
+			var n = 0;
+			while (iter.MoveNext()) {
+				var v1 = iter.Current;
+
+				var inbetween = (v0.y <= p.y && p.y < v1.y) || (v1.y <= p.y && p.y < v0.y);
+				if (inbetween) {
+					var t = math.unlerp(v0.y, v1.y, p.y);
+					var vt = math.lerp(v0.x, v1.x, t);
+					if (p.x < vt) n++;
+				}
+
+				v0 = v1;
+			}
+
+			return (n % 2) != 0;
 		}
 	}
 }
