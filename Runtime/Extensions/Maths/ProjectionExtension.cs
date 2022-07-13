@@ -1,10 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Mathematics;
+using UnityEngine;
 
 namespace Gist2.Extensions.Maths {
 
-    public static class ProjectionExtension {
+	public static class ProjectionExtension {
 
 		public static bool MakeQuadVerticesOnPlane(this IEnumerable<float2> v, out float4 z, float z0 = 1f) {
 			var p = v.Take(4).ToArray();
@@ -26,6 +27,11 @@ namespace Gist2.Extensions.Maths {
 			var z1 = math.mul(hinv, h0);
 			z = new float4(z0, z1.x, z1.y, z1.z);
 			return result;
+		}
+		public static bool MakeQuadVerticesOnPlane(this IEnumerable<Vector2> v, out Vector4 z, float z0 = 1f) { 
+			var res = v.Cast<float2>().MakeQuadVerticesOnPlane(out var y, z0);
+			z = y;
+			return res;
 		}
 	}
 }
