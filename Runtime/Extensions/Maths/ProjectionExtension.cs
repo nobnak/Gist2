@@ -29,7 +29,7 @@ namespace Gist2.Extensions.Maths {
 			return result;
 		}
 		public static bool MakeQuadVerticesOnPlane(this IEnumerable<Vector2> v, out Vector4 z, float z0 = 1f) { 
-			var res = v.Cast<float2>().MakeQuadVerticesOnPlane(out var y, z0);
+			var res = v.Select(v => (float2)v).MakeQuadVerticesOnPlane(out var y, z0);
 			z = y;
 			return res;
 		}
