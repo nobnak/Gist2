@@ -89,6 +89,7 @@ namespace Gist2.Visualization {
 		}
 		[System.Serializable]
 		public class Tuner {
+			[Tooltip("Mixer gain: x=Illusion, y=Noise")]
 			public float4 gain = new float4(1f, 1f, 1f, 1f);
 		}
 	}
