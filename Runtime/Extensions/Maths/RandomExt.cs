@@ -15,5 +15,8 @@ namespace Gis2.Extensions.Maths.RandomExt {
              => v = rand.NextFloat2(aabb.Min, aabb.Max);
         public static void Sample(this in AABB3 aabb, out float3 v)
              => v = rand.NextFloat3(aabb.Min, aabb.Max);
+
+        public static void Sample(this UnityEngine.Transform tr, out float3 v)
+            => v = tr.TransformPoint(rand.NextFloat3() - 0.5f);
     }
 }
