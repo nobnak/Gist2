@@ -1,18 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace Gist2.Extensions.SizeExt {
 
 	public static class SizeExtension {
 
-		public static Vector2Int Size(this Texture tex) => new Vector2Int(tex.width, tex.height);
-		public static Vector2Int Size(this Camera c) => new Vector2Int(c.pixelWidth, c.pixelHeight);
-		public static Vector2Int Size(this Resolution r) => new Vector2Int(r.width, r.height);
-		public static Vector2Int Size(this RenderTextureDescriptor desc) => new Vector2Int(desc.width, desc.height);
+		public static int2 Size(this Texture tex) => new int2(tex.width, tex.height);
+		public static int2 Size(this Camera c) => new int2(c.pixelWidth, c.pixelHeight);
+		public static int2 Size(this Resolution r) => new int2(r.width, r.height);
+		public static int2 Size(this RenderTextureDescriptor desc) => new int2(desc.width, desc.height);
 
-		public static float Aspect(this Vector2Int v) => v.x / (float)v.y;
+		public static float Aspect(this int2 v) => v.x / (float)v.y;
 
-		public static Vector2Int ScreenWindow() => new Vector2Int(Screen.width, Screen.height);
+		public static int2 ScreenWindow() => new int2(Screen.width, Screen.height);
 	}
 }
