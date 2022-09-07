@@ -11,8 +11,7 @@ namespace Gist2.Extensions.ScreenExt {
 
 		public static float2 UV(this int2 screen, float2 pixelPos)
 			=> new float2((float)pixelPos.x / screen.x, (float)pixelPos.y / screen.y);
-		public static float2 UV(this int2 screen, Vector3 mousePosition)
-			=> screen.UV(new float2(mousePosition.x, mousePosition.y));
+		public static float2 UV(this int2 screen, float3 mousePosition) => screen.UV(mousePosition.xy);
 		public static float2 UV(this Camera cam, float2 pixelPos) => cam.Size().UV(pixelPos);
 
 		public static float2 UV(this float2 mousePosition) => ScreenSize().UV(mousePosition);

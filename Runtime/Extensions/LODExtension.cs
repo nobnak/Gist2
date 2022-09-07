@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace Gist2.Extensions.LODExt {
@@ -14,7 +15,7 @@ namespace Gist2.Extensions.LODExt {
 			}
 			return size;
 		}
-		public static Vector2Int LOD(int width, int height, int lod) => new Vector2Int(width.LOD(lod), height.LOD(lod));
-		public static Vector2Int LOD(this Vector2Int size, int lod) => LOD(size.x, size.y, lod);
+		public static int2 LOD(int width, int height, int lod) => new int2(width.LOD(lod), height.LOD(lod));
+		public static int2 LOD(this int2 size, int lod) => LOD(size.x, size.y, lod);
 	}
 }

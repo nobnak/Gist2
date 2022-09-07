@@ -2,6 +2,7 @@ using Gist2.Deferred;
 using Gist2.Extensions.ComponentExt;
 using Gist2.Interfaces;
 using System;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace Gist2.Wrappers {
@@ -9,16 +10,16 @@ namespace Gist2.Wrappers {
 	public class RenderTextureWrapper : IValue<RenderTexture>, IValidator, System.IDisposable {
 
         #region intializer
-        public System.Func<Vector2Int, RenderTexture> Generator { get; set; }
+        public System.Func<int2, RenderTexture> Generator { get; set; }
         public event System.Action<RenderTextureWrapper> Changed;
         #endregion
 
-        protected Vector2Int size;
+        protected int2 size;
         protected RenderTexture tex, prev;
 
         protected Validator defferedTexGen;
 
-        public RenderTextureWrapper(System.Func<Vector2Int, RenderTexture> generator) {
+        public RenderTextureWrapper(System.Func<int2, RenderTexture> generator) {
             this.Generator = generator;
 
             defferedTexGen = new Validator();
@@ -47,10 +48,10 @@ namespace Gist2.Wrappers {
         }
         #endregion
 
-        public Vector2Int Size {
+        public int2 Size {
             get => size;
             set {
-                if (size != value) {
+                if (!size.Equals(value)) {
                     size = value;
                     defferedTexGen.Invalidate();
                 }
