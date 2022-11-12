@@ -10,7 +10,7 @@ float4 OutputMixer(
 	in float4 M) {
 
 	float wsum = dot(1, M);
-	float4 w = (wsum > 1) ? M / wsum : M;
+	float4 w = saturate((wsum >= 1) ? M / wsum : M);
 
 	return w.x * C0 + w.y * C1 + w.z * C2 + w.w * C3;
 }
