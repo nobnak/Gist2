@@ -24,7 +24,7 @@ namespace Gist2.Wrappers {
 
             defferedTexGen = new Validator();
             defferedTexGen.OnValidate += () => {
-                SetTexture(Generator(size));
+                SetTexture((size.x > 0 && size.y > 0) ? Generator(size) : null);
             };
             defferedTexGen.AfterValidate += () => {
                 Notify();
