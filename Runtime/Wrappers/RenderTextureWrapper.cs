@@ -12,21 +12,21 @@ namespace Gist2.Wrappers {
         #region intializer
         public System.Func<int2, RenderTexture> Generator { get; set; }
         public event System.Action<RenderTextureWrapper> Changed;
-        #endregion
+		#endregion
 
-        protected int2 size;
+		protected int2 size = -1;
         protected RenderTexture tex, prev;
 
-        protected Validator defferedTexGen;
+        protected Validator regenerate;
 
         public RenderTextureWrapper(System.Func<int2, RenderTexture> generator) {
             this.Generator = generator;
 
-            defferedTexGen = new Validator();
-            defferedTexGen.OnValidate += () => {
+            regenerate = new Validator();
+            regenerate.OnValidate += () => {
                 SetTexture((size.x > 0 && size.y > 0) ? Generator(size) : null);
             };
-            defferedTexGen.AfterValidate += () => {
+            regenerate.AfterValidate += () => {
                 Notify();
                 prev.Destroy();
             };
@@ -36,37 +36,47 @@ namespace Gist2.Wrappers {
         #region interafce
 
 		#region IAssurance
-		public void Validate(bool force = false) => defferedTexGen.Validate(force);
-		public void Invalidate() => defferedTexGen.Invalidate();
+		public void Validate(bool force = false) => regenerate.Validate(force);
+		public void Invalidate() => regenerate.Invalidate();
         #endregion
 
         #region IDisposable
         public void Dispose() {
+			size = -1;
             SetTexture(null);
             Notify();
             prev.Destroy();
         }
-        #endregion
+		#endregion
 
-        public int2 Size {
+		#region properties
+		public int2 Size {
             get => size;
             set {
                 if (!size.Equals(value)) {
                     size = value;
-                    defferedTexGen.Invalidate();
+                    regenerate.Invalidate();
                 }
             }
         }
         public RenderTexture Value { 
             get {
-                defferedTexGen.Validate();
+                regenerate.Validate();
 				return tex;
             }
         }
-        #endregion
+		#endregion
 
-        #region member
-        protected void SetTexture(RenderTexture next) {
+		public void Release() {
+			regenerate.Invalidate();
+			SetTexture(null);
+			Notify();
+			prev.Destroy();
+		}
+		#endregion
+
+		#region member
+		protected void SetTexture(RenderTexture next) {
             prev = tex;
             tex = next;
         }
