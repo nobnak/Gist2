@@ -23,7 +23,7 @@ namespace Gist2.Extensions {
 			if (-size_z <= p.z && p.z <= size_z) res |= (int)Axis.Z;
 
 #if UNITY_EDITOR
-			Debug.Log($"OOB.Contains: res={res}, local_pos={p}, size={new float3(size_x, size_y, size_z)}");
+			//Debug.Log($"OOB.Contains: res={res}, local_pos={p}, size={new float3(size_x, size_y, size_z)}");
 #endif
 
 			return res;
