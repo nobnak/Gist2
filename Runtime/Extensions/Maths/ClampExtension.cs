@@ -10,7 +10,7 @@ namespace Gist2.Extensions.Maths {
     public static class ClampExtension {
 
         [BurstCompile]
-        public static float Clamp01(this float v) => math.clamp(v, 0f, 1f);
+        public static float Clamp01(this ref float v) => v = math.clamp(v, 0f, 1f);
         [BurstCompile]
         public static void Clamp01(this ref float2 v) => v = math.clamp(v, 0f, 1f);
         [BurstCompile]
@@ -19,6 +19,6 @@ namespace Gist2.Extensions.Maths {
         public static void Clamp01(this ref float4 v) => v = math.clamp(v, 0f, 1f);
 
 		[BurstCompile]
-		public static float Clamp(this float v, float min, float max) => math.clamp(v, min, max);
+		public static float Clamp(this ref float v, float min, float max) => v = math.clamp(v, min, max);
 	}
 }
