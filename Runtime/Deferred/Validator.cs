@@ -13,6 +13,7 @@ namespace Gist2.Deferred {
 
 		public event System.Func<bool> CheckValidity;
 		public event System.Action OnValidate;
+        public event System.Action OnReset;
         public event System.Action AfterValidate;
 		public event System.Action OnInvalidate;
 
@@ -56,6 +57,7 @@ namespace Gist2.Deferred {
 			OnValidate = null;
 			lastValidationTime = -1;
 			underEvaluation = false;
+            OnReset?.Invoke();
 		}
         #endregion
 
