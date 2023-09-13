@@ -25,6 +25,7 @@ namespace Gist2.Extensions.ComponentExt {
         }
 
         public static bool EqualsAsJson<T>(this T a, T b) {
+            if (a == null || b == null) return Object.Equals(a, b);
             var aJson = JsonUtility.ToJson(a);
             var bJson = JsonUtility.ToJson(b);
             return aJson == bJson;
