@@ -23,5 +23,11 @@ namespace Gist2.Extensions.ComponentExt {
                 p.SetValue(s, p.GetValue(t));
             return s;
         }
+
+        public static bool EqualsAsJson<T>(this T a, T b) {
+            var aJson = JsonUtility.ToJson(a);
+            var bJson = JsonUtility.ToJson(b);
+            return aJson == bJson;
+        }
     }
 }
