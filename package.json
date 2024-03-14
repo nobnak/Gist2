@@ -5,7 +5,7 @@
 	},
 	"name": "jp.nobnak.gist2",
 	"displayName": "Gist2",
-	"version": "1.4.3",
+	"version": "1.5.0",
 
 	"dependencies": {
 		"com.unity.mathematics": "1.2.6",
