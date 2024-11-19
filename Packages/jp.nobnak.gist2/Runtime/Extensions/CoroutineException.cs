@@ -8,10 +8,10 @@ namespace Gist2.Extensions.CoroutineExt {
 
         public static Token StartCoroutineWithToken(this MonoBehaviour mono, IEnumerator routine) {
             var token = new Token();
-            mono.StartCoroutine(WrapRoutine(token, routine));
+            token.co = mono.StartCoroutine(WrapRoutine(token, routine));
             return token;
 
-            IEnumerator WrapRoutine(Token token, IEnumerator routine) {
+            static IEnumerator WrapRoutine(Token token, IEnumerator routine) {
                 yield return null;
 
                 while (true) {
@@ -41,6 +41,8 @@ namespace Gist2.Extensions.CoroutineExt {
         public class Token {
             public event System.Action<System.Exception> OnException;
             public event System.Action OnComplete;
+
+            public Coroutine co;
 
             public Token RegisterOnException(System.Action<System.Exception> action) {
                 OnException += action;
