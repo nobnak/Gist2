@@ -6,12 +6,12 @@ using UnityEngine;
 
 namespace Gist2.Wrappers {
 
-    public class GraphicsBuffereWrapper<T> : IValue<GraphicsBuffer>, System.IDisposable
+    public class GraphicsBufferWrapper<T> : IValue<GraphicsBuffer>, System.IDisposable
         where T : struct {
 
         #region intializer
         public System.Func<int, int, GraphicsBuffer> Generator { get; set; }
-        public event System.Action<GraphicsBuffereWrapper<T>> Changed;
+        public event System.Action<GraphicsBufferWrapper<T>> Changed;
         #endregion
 
         protected List<T> data = new();
@@ -19,7 +19,7 @@ namespace Gist2.Wrappers {
 
         protected Validator dataChanged = new();
 
-        public GraphicsBuffereWrapper(System.Func<int, int, GraphicsBuffer> generator) {
+        public GraphicsBufferWrapper(System.Func<int, int, GraphicsBuffer> generator) {
             this.Generator = generator;
             dataChanged.OnValidate += () => {
                 if (buf == null || buf.count != data.Capacity) {
@@ -31,7 +31,7 @@ namespace Gist2.Wrappers {
                     buf.SetData(data);
             };
         }
-        public GraphicsBuffereWrapper() : this(null) { }
+        public GraphicsBufferWrapper() : this(null) { }
 
         #region properties
         public GraphicsBuffer Value {
@@ -59,18 +59,18 @@ namespace Gist2.Wrappers {
                 dataChanged.Invalidate();
             }
         }
-        public GraphicsBuffereWrapper<T> Add(T item) {
+        public GraphicsBufferWrapper<T> Add(T item) {
             data.Add(item);
             dataChanged.Invalidate();
             return this;
         }
-        public GraphicsBuffereWrapper<T> RemoveAt(int index) {
+        public GraphicsBufferWrapper<T> RemoveAt(int index) {
             data.RemoveAt(index);
             dataChanged.Invalidate();
             return this;
         }
         public int Count => data.Count;
-        public GraphicsBuffereWrapper<T> Clear() {
+        public GraphicsBufferWrapper<T> Clear() {
             data.Clear();
             dataChanged.Invalidate();
             return this;
@@ -78,7 +78,7 @@ namespace Gist2.Wrappers {
         #endregion
 
         #region buffer
-        public GraphicsBuffereWrapper<T> UploadToGPU() {
+        public GraphicsBufferWrapper<T> UploadToGPU() {
             dataChanged.Validate();
             if (buf != null && data.Count > 0)
                 buf.SetData(data);
@@ -91,7 +91,7 @@ namespace Gist2.Wrappers {
         #endregion
 
         #region static
-        public static implicit operator GraphicsBuffer(GraphicsBuffereWrapper<T> h) => h.Value;
+        public static implicit operator GraphicsBuffer(GraphicsBufferWrapper<T> h) => h.Value;
         #endregion
     }
 }
