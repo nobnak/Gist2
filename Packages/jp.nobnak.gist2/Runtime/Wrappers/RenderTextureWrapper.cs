@@ -84,7 +84,8 @@ namespace Gist2.Wrappers {
         #endregion
 
         #region static
-        public static implicit operator RenderTexture(RenderTextureWrapper h) => h.Value;
+        public static implicit operator RenderTexture(RenderTextureWrapper h) 
+            => (h != null) ? h.Value : null;
         #endregion
     }
 }

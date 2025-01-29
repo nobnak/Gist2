@@ -91,7 +91,8 @@ namespace Gist2.Wrappers {
         #endregion
 
         #region static
-        public static implicit operator GraphicsBuffer(GraphicsBufferWrapper<T> h) => h.Value;
+        public static implicit operator GraphicsBuffer(GraphicsBufferWrapper<T> h) 
+            => (h != null) ? h.Value : null;
         #endregion
     }
 }
