@@ -4,12 +4,12 @@ namespace Gist2.Extensions.ComponentExt {
 
     public static class ObjectExtension {
 
-        public static T Destroy<T>(this T v) where T : UnityEngine.Object {
+        public static T Destroy<T>(this T v) where T : Object {
             if (v != null) {
                 if (Application.isPlaying)
-                    UnityEngine.Object.Destroy(v);
+                    Object.Destroy(v);
                 else
-                    UnityEngine.Object.DestroyImmediate(v);
+                    Object.DestroyImmediate(v);
             }
             return v;
         }
