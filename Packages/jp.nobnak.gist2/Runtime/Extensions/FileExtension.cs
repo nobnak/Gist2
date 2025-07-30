@@ -9,7 +9,7 @@ namespace Gist2.Extensions.FileExt {
     public static class FileExtension {
         [Obsolete("Use SaveJsonTo instead.")]
         public static bool SaveTo(this object obj, string path) {
-            return SaveJasonTo(obj, path);
+            return SaveJsonTo(obj, path);
         }
         [Obsolete("Use LoadJsonOverwriteFrom instead.")]
         public static bool LoadOverwriteFrom(this object obj, string path) {
@@ -20,7 +20,7 @@ namespace Gist2.Extensions.FileExt {
             return JsonUtility.FromJson<T>(path);
         }
 
-        public static bool SaveJasonTo(this object obj, string path, bool prettyPrint = true) {
+        public static bool SaveJsonTo(this object obj, string path, bool prettyPrint = true) {
             try {
                 var json = JsonUtility.ToJson(obj, prettyPrint);
                 File.WriteAllText(path, json);
