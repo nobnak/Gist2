@@ -1,3 +1,4 @@
+using Codice.CM.Common.Checkin.Partial;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -40,13 +41,15 @@ namespace Gist2.Extensions.FileExt {
                 return false;
             }
         }
-        public static T LoadJsonFrom<T>(this string path) {
+        public static bool LoadJsonFrom<T>(this string path, out T result) {
             try {
                 var json = File.ReadAllText(path);
-                return JsonUtility.FromJson<T>(json);
+                result = JsonUtility.FromJson<T>(json);
+                return true;
             } catch (System.Exception e) {
                 Debug.LogWarning(e);
-                return default;
+                result = default;
+                return false;
             }
         }
     }
