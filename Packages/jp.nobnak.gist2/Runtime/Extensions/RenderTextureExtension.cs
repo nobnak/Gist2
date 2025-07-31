@@ -1,7 +1,3 @@
-using Gist2.Extensions.EditorExt;
-using Gist2.Extensions.SizeExt;
-using System.Collections;
-using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -14,6 +10,15 @@ namespace Gist2.Extensions.RenderTextureExt {
             RenderTexture.active = tex;
             GL.Clear(clearColor, clearDepth, color);
             RenderTexture.active = prev;
+            return tex;
+        }
+        public static RenderTexture Resize(this RenderTexture tex, int2 size) {
+            if (tex != null && tex.width != size.x && tex.height != size.y) {
+                tex.Release();
+                tex.width = size.x;
+                tex.height = size.y;
+                tex.Create();
+            }
             return tex;
         }
     }
